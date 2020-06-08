@@ -1,99 +1,97 @@
-# Assignment: ASSIGNMENT 1
+# Assignment: ASSIGNMENT 2
 # Name: Gunasekaran, Ragunath
 # Date: 2020-06-07
 
 
-# Basics
+# Assignment: ASSIGNMENT 2
+# Name: Lastname, Firstname
+# Date: 2010-02-14
 
-## Add 8 and 5
-x <- 8+5
+## Check your current working directory using `getwd()`
+getwd()
 
-## Subtract 6 from 22
-y <- 22-6
+## List the contents of the working directory with the `dir()` function
+dir()
 
-## Multiply 6 by 7
-z <- 6*7
+## If the current directory does not contain the `data` directory, set the
+## working directory to project root folder (the folder should contain the `data` directory
+## Use `setwd()` if needed
+setwd("/home/jdoe/Workspaces/dsc520")
 
-## Add 4 to 6 and divide the result by 2
-a <- (4+5+6)/2
+## Load the file `data/tidynomicon/person.csv` to `person_df1` using `read.csv`
+## Examine the structure of `person_df1` using `str()`
+person_df1 <- read.csv(file='`data/tidynomicon/person.csv')
+str(person_df1)
 
-## Compute 5 modulo 2
-b=5%%2
-#b=1
+## R interpreted names as factors, which is not the behavior we want
+## Load the same file to person_df2 using `read.csv` and setting `stringsAsFactors` to `FALSE`
+## Examine the structure of `person_df2` using `str()`
+person_df2 <- read.csv(file='`data/tidynomicon/person.csv',stringsAsFactors=FALSE)
+str(person_df2)
 
-## Assign the value 82 to the variable x
-## Print x
-x <- 82
-print(x)
+## Read the file `data/scores.csv` to `scores_df`
+## Display summary statistics using the `summary()` function
+scores_df <-read.csv(file='data/tidynomicon/person.csv')
+summary(scores_df)
 
-## Assign the value 41 to the variable y
-## Print y
-y <- 41
-print(y)
+## Load the `readxl` library
+library(readxl)
 
-## Assign the output of x + y to the variable z
-## Print z
-z <- x+y
-print(z)
+## Using the excel_sheets() function from the `readxl` package,
+## list the worksheets from the file `data/G04ResultsDetail2004-11-02.xls`
+excel_sheets()
 
-## Assign the string value "DSC520" to the variable class_name
-## Print the value of class_name
-class_name <-"Dsc520"
+## Using the `read_excel` function, read the Voter Turnout sheet
+## from the `data/G04ResultsDetail2004-11-02.xls`
+## Assign the data to the `voter_turnout_df1`
+## The header is in the second row, so make sure to skip the first row
+## Examine the structure of `voter_turnout_df1` using `str()`
 
-## Assign the string value of TRUE to the variable is_good
-## Print the value of is_good
-is_good <- T
-## Check the class of the variable is_good using the `class()` function
-class(is_good)
+voter_turnout_df1 <- read_excel(file=`data/G04ResultsDetail2004-11-02.xls`)
+str(voter_turnout_df1)
 
-## Check the class of the variable z using the `class()` function
-class(z)
+## Using the `read_excel()` function, read the Voter Turnout sheet
+## from `data/G04ResultsDetail2004-11-02.xls`
+## Skip the first two rows and manually assign the columns using `col_names`
+## Use the names "ward_precint", "ballots_cast", "registered_voters", "voter_turnout"
+## Assign the data to the `voter_turnout_df2`
+## Examine the structure of `voter_turnout_df2` using `str()`
+voter_turnout_df2 <- read_excel(file=`data/G04ResultsDetail2004-11-02.xls`)
+str(voter_turnout_df2)
 
-## Check the class of the variable class_name using the class() function
-class(class_name)
+## Load the `DBI` library
+library(DBI)
 
+## Create a database connection to `data/tidynomicon/example.db` using the dbConnect() function
+## The first argument is the database driver which in this case is `RSQLite::SQLite()`
+## The second argument is the path to the database file
+## Assign the connection to `db` variable
+db <- dbConnect(RSQLite::SQLite(), ":memory:")
 
+## Query the Person table using the `dbGetQuery` function and the
+## `SELECT * FROM PERSON;` SQL statement
+## Assign the result to the `person_df` variable
+## Use `head()` to look at the first few rows of the `person_df` dataframe
+person_df <- dbSendQuery(db,`SELECT * FROM PERSON;`, header = TRUE)
+head(person_df)
+## List the tables using the `dbListTables()` function
+## Assign the result to the `table_names` variable
+table_names <-dbListTables(db)
 
-### The below are excericse I tried in this week
+## Read all of the tables at once using the `lapply` function and assign the result to the `tables` variable
+## Use `table_names`, `dbReadTable`, and `conn = db` as arguments
+## Print out the tables
+tables <- lapply()
+tables
 
-# Data Types in R
-a <- c(1.8, 4.5)   #numeric
-b <- c(1 + 2i, 3 - 6i) #complex
-d <- c(23, 44)   #integer
-e <- vector("logical", length = 5)
-qt <- c("Time", 24, "October", TRUE, 3.33)  #character
-ab <- c(TRUE, 24) #numeric
-cd <- c(2.5, "May") #character
+## Use the `dbDisconnect` function to disconnect from the database
+disconnect(db)
 
-# Class Check
-class(qt)
-"character"
+## Import the `jsonlite` library
+library(jsonlite)
 
-#list
-my_list <- list(22, "ab", TRUE, 1 + 2i)
-my_list[[3]]
+## Convert the scores_df dataframe to JSON using the `toJSON()` function
+JSON <- toJson(scores_df)
 
-#Matrix
-my_matrix <- matrix(1:6, nrow=3, ncol=2)
-my_matrix
-
-#assign dimension dim()
-age <- c(23, 44, 15, 12, 31, 16)
-dim(age) <- c(2,3)
-age
-
-#join two vectors using cbind() and rbind() functions
-x <- c(1, 2, 3, 4, 5, 6)
-y <- c(20, 30, 40, 50, 60)
-rbind(x, y)
-cbind(x, y)
-
-#Data Frame:
-df <- data.frame(name = c("ash","jane","paul","mark"), score = c(67,56,87,91))
-df
-
-dim(df)
-str(df)
-mean(df$score, na.rm = TRUE)
-
-
+## Convert the scores dataframe to JSON using the `toJSON()` function with the `pretty=TRUE` option
+JSON <- toJson(scores_df,`pretty=TRUE`)
