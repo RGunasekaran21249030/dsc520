@@ -3,10 +3,6 @@
 # Date: 2020-06-07
 
 
-# Assignment: ASSIGNMENT 2
-# Name: Lastname, Firstname
-# Date: 2010-02-14
-
 ## Check your current working directory using `getwd()`
 getwd()
 
@@ -20,26 +16,28 @@ setwd("/home/jdoe/Workspaces/dsc520")
 
 ## Load the file `data/tidynomicon/person.csv` to `person_df1` using `read.csv`
 ## Examine the structure of `person_df1` using `str()`
-person_df1 <- read.csv(file='`data/tidynomicon/person.csv')
+person_df1 <- read.csv('data/tidynomicon/person.csv')
 str(person_df1)
 
 ## R interpreted names as factors, which is not the behavior we want
 ## Load the same file to person_df2 using `read.csv` and setting `stringsAsFactors` to `FALSE`
 ## Examine the structure of `person_df2` using `str()`
-person_df2 <- read.csv(file='`data/tidynomicon/person.csv',stringsAsFactors=FALSE)
+person_df2 <- read.csv('data/tidynomicon/person.csv',stringsAsFactors=FALSE)
 str(person_df2)
 
 ## Read the file `data/scores.csv` to `scores_df`
 ## Display summary statistics using the `summary()` function
-scores_df <-read.csv(file='data/tidynomicon/person.csv')
+scores_df <-read.csv('data/tidynomicon/person.csv')
 summary(scores_df)
 
 ## Load the `readxl` library
+#install.packages("readxl")
 library(readxl)
 
 ## Using the excel_sheets() function from the `readxl` package,
 ## list the worksheets from the file `data/G04ResultsDetail2004-11-02.xls`
-excel_sheets()
+excel_sheets("data/G04ResultsDetail2004-11-02.xls")
+
 
 ## Using the `read_excel` function, read the Voter Turnout sheet
 ## from the `data/G04ResultsDetail2004-11-02.xls`
@@ -47,7 +45,7 @@ excel_sheets()
 ## The header is in the second row, so make sure to skip the first row
 ## Examine the structure of `voter_turnout_df1` using `str()`
 
-voter_turnout_df1 <- read_excel(file=`data/G04ResultsDetail2004-11-02.xls`)
+voter_turnout_df1 <- read_excel("data/G04ResultsDetail2004-11-02.xls",sheet="Voter Turnout")
 str(voter_turnout_df1)
 
 ## Using the `read_excel()` function, read the Voter Turnout sheet
@@ -56,11 +54,21 @@ str(voter_turnout_df1)
 ## Use the names "ward_precint", "ballots_cast", "registered_voters", "voter_turnout"
 ## Assign the data to the `voter_turnout_df2`
 ## Examine the structure of `voter_turnout_df2` using `str()`
-voter_turnout_df2 <- read_excel(file=`data/G04ResultsDetail2004-11-02.xls`)
+
+voter_turnout_df2 <- read_excel("data/G04ResultsDetail2004-11-02.xls",sheet="Voter Turnout", n_max = 0)
 str(voter_turnout_df2)
+
 
 ## Load the `DBI` library
 library(DBI)
+install.packages("RSQLite")
+
+latest <- "http://sqlite.org/2014/sqlite-amalgamation-3080600.zip"
+tmp <- tempfile()
+download.file(latest, tmp)
+unzip(tmp, exdir = "src/sqlite", junkpaths = TRUE)
+unlink("src/sqlite/shell.c")
+
 
 ## Create a database connection to `data/tidynomicon/example.db` using the dbConnect() function
 ## The first argument is the database driver which in this case is `RSQLite::SQLite()`
@@ -72,7 +80,7 @@ db <- dbConnect(RSQLite::SQLite(), ":memory:")
 ## `SELECT * FROM PERSON;` SQL statement
 ## Assign the result to the `person_df` variable
 ## Use `head()` to look at the first few rows of the `person_df` dataframe
-person_df <- dbSendQuery(db,`SELECT * FROM PERSON;`, header = TRUE)
+person_df <- dbGetQuery(db,`SELECT * FROM PERSON;`, header = TRUE)
 head(person_df)
 ## List the tables using the `dbListTables()` function
 ## Assign the result to the `table_names` variable
