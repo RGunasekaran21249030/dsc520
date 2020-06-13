@@ -96,10 +96,11 @@ tables
 disconnect(db)
 
 ## Import the `jsonlite` library
+install.packages("jsonlite")
 library(jsonlite)
 
 ## Convert the scores_df dataframe to JSON using the `toJSON()` function
 JSON <- toJson(scores_df)
 
 ## Convert the scores dataframe to JSON using the `toJSON()` function with the `pretty=TRUE` option
-JSON <- toJson(scores_df,`pretty=TRUE`)
+JSON <- toJson(scores_df,pretty=TRUE)
