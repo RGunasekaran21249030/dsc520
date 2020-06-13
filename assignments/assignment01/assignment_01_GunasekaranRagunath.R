@@ -82,18 +82,5 @@ age <- c(23, 44, 15, 12, 31, 16)
 dim(age) <- c(2,3)
 age
 
-#join two vectors using cbind() and rbind() functions
-x <- c(1, 2, 3, 4, 5, 6)
-y <- c(20, 30, 40, 50, 60)
-rbind(x, y)
-cbind(x, y)
-
-#Data Frame:
-df <- data.frame(name = c("ash","jane","paul","mark"), score = c(67,56,87,91))
-df
-
-dim(df)
-str(df)
-mean(df$score, na.rm = TRUE)
 
 
