@@ -63,11 +63,11 @@ str(voter_turnout_df2)
 library(DBI)
 install.packages("RSQLite")
 
-latest <- "http://sqlite.org/2014/sqlite-amalgamation-3080600.zip"
-tmp <- tempfile()
-download.file(latest, tmp)
-unzip(tmp, exdir = "src/sqlite", junkpaths = TRUE)
-unlink("src/sqlite/shell.c")
+#latest <- "http://sqlite.org/2014/sqlite-amalgamation-3080600.zip"
+#tmp <- tempfile()
+#download.file(latest, tmp)
+#unzip(tmp, exdir = "src/sqlite", junkpaths = TRUE)
+#unlink("src/sqlite/shell.c")
 
 
 ## Create a database connection to `data/tidynomicon/example.db` using the dbConnect() function
