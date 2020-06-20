@@ -90,7 +90,8 @@ grades <- cbind(students_combined, assignment04)
 assignments <- c("Assignment 1", "Assignment 2", "Assignment 3")
 students <- c("Florinda Baird", "Jinny Foss", "Lou Purvis", "Nola Maloney")
 
-rownames(assignments) <- 1:3
+rownames(assignments) <- assignments
+attr(df, "row.names")
 colnames(students) <- students
 
 ## Total points for each assignment using `colSums()`
