@@ -69,7 +69,7 @@ ggplot(data=florida_df, aes(x="deaths" , group=1)) +
   geom_line(data=california_df, aes(y = cases, colour="California")) +
   scale_colour_manual(name = "State Dataset",,
                      breaks = c("Florida", "New York", "California"),
-                     values = c("red", "green", "steelblue")) +
+                     values = c("darkred", "darkgreen", "steelblue")) +
   xlab(" ") + ylab("Cases")
 
 ## Scale the y axis using `scale_y_log10()`
@@ -79,5 +79,5 @@ ggplot(data=florida_df, aes(x="deaths" , group=1)) +
   geom_line(data=california_df, aes(y = cases, colour="California")) +
   scale_colour_manual(name = "State Dataset",,
                       breaks = c("Florida", "New York", "California"),
-                      values = c("red", "green", "steelblue")) +
+                      values = c("darkred", "darkgreen", "steelblue")) +
   xlab(" ") + ylab("Cases")+scale_y_log10()
