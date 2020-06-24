@@ -54,7 +54,7 @@ covid_df$date <- as.Date(covid_df$date)
 
 ```{r plot, echo=FALSE, message=FALSE}
 library(ggplot2)
-ggplot(data=florida_df, aes(x=date,group=1)) +
+ggplot(data=florida_df, aes(x=sort(date),group=1)) +
   geom_line(aes(y = cases, colour = "Florida")) +
   geom_line(data=ny_df, aes(y = cases,colour="New York")) +
   geom_line(data=california_df, aes(y = cases, colour="California")) +
