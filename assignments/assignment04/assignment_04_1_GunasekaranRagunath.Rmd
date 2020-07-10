@@ -1,0 +1,109 @@
+---
+title: 'Assignment 4.1 : Student Survey'
+author: "Ragunath Gunasekaran"
+date: "July 1 2020"
+output:
+  word_document: default
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+
+## Footnote
+This is a Footnote test.
+
+## Citations
+
+* R for Everyone
+* Discovering Statistics Using R
+
+
+## a. Calculating Covariance for Student Survey Dataset
+
+Covariance is used to assess whether or not two variables are related to each other. A positive covariance means that as one of the variables varies from the mean, so does the other variable and in the same direction. A negative covariance means that as one variable deviates from the mean, so does the other variable but in the opposite direction.
+
+cov(student_survey)
+
+
+```{r dataframe code, include=FALSE}
+student_survey <- read.csv("student-survey.csv")
+```
+
+```{r dataframe code1, echo=FALSE}
+cov(student_survey)
+```
+
+The covariance of TimeReading and TimeTV is about -20. It indicates a Opposite direction between the two variables
+
+## Variables in the Student Survey
+The variables are all measured differently, even for the two timed variables it seems that the TimeReading is in hours and the TimeTV is in minutes. Happiness is a numbered score and gender is indicated by either a 0 or 1. Covariance is not a standardized measure and therefore depends on the standards of measurement used for each variable. Standard deviation is the standardized measurement that we must use since the variables are not equivalent in how they are measured. The idea here is to use a correlation coefficient, specifically the Pearson correlation coefficient, to account for differences in variable measurements.
+
+
+##Correlation Test to Use
+I would choose to use a Pearson correlation because it requires only that data are interval and We can compare many variables at once. I would hypothesize that the test yields a negative correlation such that the more the subject reads, the less time they spend watching TV.
+
+##Correlation Analyses
+For All Variables:
+
+cor(student_survey, use = "complete.obs", method = "pearson")
+
+```{r dataframe code2, echo=FALSE}
+cor(student_survey, use = "complete.obs", method = "pearson")
+```
+
+Between Only Two Variables:
+cor(student_survey$TimeReading, student_survey$TimeTV, use = "complete.obs", method = "pearson")
+```{r dataframe code3, echo=FALSE}
+cor(student_survey$TimeReading, student_survey$TimeTV, use = "complete.obs", method = "pearson")
+```
+
+## Correlation Matrix Explained
+We can see that each time the matrix shows two of the same variables correlating to each other, it is a perfect positive relationship. This is to be expected, since it is comparing two of the same variables. However, we see that there are negative correlations with TimeReading when compared to TimeTV, Happiness, and Gender. There is a positive correlation with TimeTV when compared to Happiness and Gender. Happiness and Gender also have a positive correlation when compared to one another.
+
+## Correlation Coefficient and Coefficient of Determination
+Below is the code to find these coefficients. Correlation Coefficient:
+cor(student_survey)
+```{r dataframe code4, echo=FALSE}
+cor(student_survey)
+```
+
+Coefficient of Determination:
+cor(student_survey)^2
+```{r dataframe code5, echo=FALSE}
+cor(student_survey)^2
+```
+
+cor(student_survey)^2 * 100
+```{r dataframe code6, echo=FALSE}
+cor(student_survey)^2 * 100
+```
+
+## Partial Correlation of TimeTV & Happiness With Gender as a Control
+survar2 <- student_survey[, c("TimeTV", "Happiness", "Gender")]
+pc <- pcor(c("TimeTV", "Happiness", "Gender"), var(survar2))
+pc
+pcor.test(pc, 1, 11)
+
+```{r dataframe code7, echo=FALSE}
+survar2 <- student_survey[, c("TimeTV", "Happiness", "Gender")]
+
+```
+
+$tval
+[1] 2.377919
+ 
+$df
+[1] 8
+ 
+$pvalue
+[1] 0.04469059
+
+
+
+
+# References
+
+R Core Team. 2020. R: A Language and Environment for Statistical Computing. Vienna, Austria: R Foundation for Statistical Computing. https://www.R-project.org/.
+
+Xie, Yihui. 2016. Bookdown: Authoring Books and Technical Documents with R Markdown. Boca Raton, Florida: Chapman; Hall/CRC. https://github.com/rstudio/bookdown.
