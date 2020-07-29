@@ -1,0 +1,152 @@
+---
+title: 'Assignment 8.2 : Introduction to machine Learning'
+author: "Ragunath Gunasekaran"
+date: "July 21 2020"
+output:
+  pdf_document: default
+  word_document: default
+  html_document:
+    df_print: paged
+---
+
+
+## Footnote
+This is a Footnote test.
+
+## Citations
+
+* R for Everyone
+* Discovering Statistics Using R
+
+##  Plot the data from each dataset using a scatter plot
+
+```{r dataframe code, include=FALSE}
+binary_data <- read.csv("binary-classifier-data.csv")
+trinary_data <- read.csv("trinary-classifier-data.csv")
+```
+
+
+##  Scatter plot of binary dataset
+
+```{r plot, echo=FALSE, message=FALSE}
+library(ggplot2)
+scatterbin <- ggplot(binary_data, aes(x, y))
+scatterbinary <- scatterbin + geom_point() + geom_smooth(method = "lm", aes(fill = label), alpha = 0.1) + labs(x = "Value of X", y = "Value of y", colour = "label")
+
+plot(scatterbinary)
+
+```
+
+
+##  Scatter plot of trinary dataset
+
+
+```{r plot1, echo=FALSE, message=FALSE}
+
+scattertrin <- ggplot(trinary_data, aes(x, y))
+scattertrinary <- scattertrin + geom_point() + geom_smooth(method = "lm", aes(fill = label), alpha = 0.1) + labs(x = "Value of X", y = "Value of y", colour = "label")
+plot(scattertrinary)
+
+
+```
+
+## k nearest neighbors algorithm categorizes
+## Fiting a k nearest neighbors model for each dataset for k=3, k=5, k=10, k=15, k=20, and k=25. Compute the accuracy of the resulting models for each value of k. Plot the results in a graph where the x-axis is the different values of k and the y-axis is the accuracy of the model.
+
+
+```{r dataframe code1, include=FALSE}
+# Data Normalization
+binary_data1 <- binary_data[, c("x", "y")]
+trinary_data1 <- trinary_data[, c("x", "y")]
+
+# Create train and test datasets for binary data
+set.seed(111)
+dat.binary <- sample(1:nrow(binary_data1),size=nrow(binary_data1)*0.7,replace = FALSE) #random selection of 70% data.
+ 
+train.binary <- binary_data[dat.binary,] # 70% training data
+test.binary <- binary_data[-dat.binary,] # remaining 30% test data
+
+
+# Create train and test datasets for trinary data
+set.seed(123)
+dat.d <- sample(1:nrow(trinary_data1),size=nrow(trinary_data1)*0.7,replace = FALSE) #random selection of 70% data.
+ 
+train.trinary <- trinary_data[dat.d,] # 70% training data
+test.trinary <- trinary_data[-dat.d,] # remaining 30% test data
+
+
+train.binarylabels <- binary_data[dat.binary,1,drop=TRUE]
+test.binarylabels <-binary_data[-dat.binary,1,drop=TRUE]
+
+```
+```{r plot2, echo=FALSE, message=FALSE}
+##  Find the number of observations in binary train data
+NROW(train.binary) 
+
+#  Find the number of observations in binary test data
+NROW(test.binary)
+
+#  Find the number of observations in binary train data
+NROW(train.binarylabels)
+
+#  Find the number of observations in binary test data
+NROW(test.binarylabels)
+
+
+
+#Build models with different K values for binary data
+#Store K values and accuracy values in a dataframe for different k values
+library(class)
+list2 <- list(3,5,10,15,20,25)
+i=1
+k.binaryaccur=1
+for (i in list2){
+    knn.mod <- knn(train=train.binary, test=test.binary, cl=train.binarylabels, k=i)
+    k.binaryaccur[i] <- 100 * sum(test.binarylabels == knn.mod)/NROW(test.binarylabels)
+    k=i
+    cat(k,'=',k.binaryaccur[i],'')
+    }
+    
+
+#Creating seperate dataframe for trinary label data
+train.trinarylabels <- trinary_data[dat.d,1,drop=TRUE]
+test.trinarylabels <-trinary_data[-dat.d,1,drop=TRUE]
+
+# Find the number of observations in trinary train data
+NROW(train.trinary) 
+
+#  Find the number of observations in trinary test data
+NROW(test.trinary)
+
+##  Find the number of observations in trinary train data
+NROW(train.trinarylabels) 
+
+#  Find the number of observations in trinary test data
+NROW(test.trinarylabels)
+
+#Store K values and accuracy values in a dataframe for different k values
+library(class)
+list3 <- list(3,5,10,15,20,25)
+j=1
+k.trinaryaccur=1
+for (j in list3){
+    knn.modtri <- knn(train=train.trinary, test=test.trinary, cl=train.trinarylabels, k=j)
+    k.trinaryaccur[j] <- 100 * sum(test.trinarylabels == knn.modtri)/NROW(test.trinarylabels)
+    k=j
+    cat(k,'=',k.trinaryaccur[j],'')
+    }
+    
+    
+#  Plot Accuracy values with k values
+
+plot(k.trinaryaccur, type="b", xlab="K- Value",ylab="Accuracy level")
+
+
+#  Plot Accuracy values with k values
+plot(k.binaryaccur, type="b", xlab="K- Value",ylab="Accuracy level")
+```
+
+# References
+1. Bernard Marr. (2016). Supervised V Unsupervised Machine Learning – What’s The Difference?
+2. Bernard Marr. (2016). What Is The Difference Between Artificial Intelligence And Machine Learning?
+3. Bernard Marr. (2016). What Is The Difference Between Deep Learning, Machine Learning and AI?
