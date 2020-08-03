@@ -150,3 +150,4 @@ plot(k.binaryaccur, type="b", xlab="K- Value",ylab="Accuracy level")
 1. Bernard Marr. (2016). Supervised V Unsupervised Machine Learning – What’s The Difference?
 2. Bernard Marr. (2016). What Is The Difference Between Artificial Intelligence And Machine Learning?
 3. Bernard Marr. (2016). What Is The Difference Between Deep Learning, Machine Learning and AI?
+4. http://rstudio-pubs-static.s3.amazonaws.com/515845_ac9b3e6ee0b14ede809e2ce59dd43830.html ( Added new link)
