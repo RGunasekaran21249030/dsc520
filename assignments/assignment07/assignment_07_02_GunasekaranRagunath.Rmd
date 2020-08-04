@@ -47,8 +47,8 @@ modelBinaryClassifier <- glm(label ~ x + y, data = BinaryClassifier_df, family =
 summary(modelBinaryClassifier)
 ```
 
-install.packages("ROCR")
-library(ROCR)
+#install.packages("ROCR")
+#library(ROCR)
 
 
 ```{r dataframe logisticbindata, echo=FALSE}
@@ -74,13 +74,12 @@ The accuracy of the logistic regression classifier for Binary Dataset is ~ 57%
 ## The accuracy of the logistic regression classifier and nearest neighbors
 # Referred from Source 6
 
-
-#install.packages('class')
+```{r dataframe knndataset, echo=FALSE}
 library(class)
-
-BinaryClassifier_dfknn <- as.data.frame(lapply(BinaryClassifier_df[,2:2]))
-
+nor <-function(x) { (x -min(x))/(max(x)-min(x))   }
+BinaryClassifier_dfknn <- as.data.frame(lapply(BinaryClassifier_df[,1:1],nor))
 set.seed(12)
+
 #selection with random of 75% data.
 BinaryClassifier_dfknn1 <- sample(1:nrow(BinaryClassifier_df),size=nrow(BinaryClassifier_df)*0.75,replace = FALSE) 
 
@@ -98,14 +97,14 @@ dt_Training2 <- BinaryClassifier_dfknn[BinaryClassifier_dfknn1,drop=TRUE]
 #25% data - testing  for variable y
 dt_testsample2 <- BinaryClassifier_dfknn[-BinaryClassifier_dfknn1,drop=TRUE]
 
-#Build nearest neighbors model using k values of 32 and 33 
+#Build nearest neighbors model using k values of 32
 
-modelbinarydfknn <- knn(data.frame(dt_Training1), data.frame(dt_testsample1), cl=dt_Training2, k=32)
+modelbinarydfknn <- knn(data.frame(dt_Training1), data.frame(dt_testsample1), cl=dt_Training1, k=32)
 
 #Calculate the proportion of correct classification for k = 32
 Accuracyofmodelknn <- 100 * sum(dt_Training2 == modelbinarydfknn)/NROW(dt_testsample2)
 
-Accuracyofmodelknn
+```
 
 
 
