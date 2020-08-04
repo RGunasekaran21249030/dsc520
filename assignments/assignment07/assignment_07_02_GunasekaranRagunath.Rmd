@@ -1,0 +1,128 @@
+---
+title: 'Assignment 7.2 Assignment: Fit a Logistic Regression Model to Previous Dataset '
+author: "Ragunath Gunasekaran"
+date: "Aug 4 2020"
+output:
+  html_document:
+    df_print: paged
+  word_document: default
+  pdf_document: default
+---
+
+
+## Footnote
+This is a Footnote test.
+
+## Citations
+
+* R for Everyone
+* Discovering Statistics Using R
+
+## Data Load - Data from CSV file load into Dataframe
+
+```{r dataframe code, include=FALSE}
+BinaryClassifier_df <- read.csv("binary-classifier-data.csv")
+show(BinaryClassifier_df)
+```
+
+
+```{r dataframe StructureBin, echo=FALSE}
+# Compactly Display The Structure Of An Arbitrary R Object -- Source 6
+str(BinaryClassifier_df) 
+```
+
+Three variables x,y Labels
+##  Logistic Regression with generalized linear models
+
+
+a.The accuracy of the logistic regression classifier
+
+# Exploring Data - Generating two models with x and y variable
+```{r dataframe modelBinaryClassifier, include=FALSE}
+modelBinaryClassifier <- glm(label ~ x + y, data = BinaryClassifier_df, family = "binomial")
+```
+
+## Summar of the model data for variable x and y
+```{r dataframe summarydf, include=FALSE}
+summary(modelBinaryClassifier)
+```
+
+install.packages("ROCR")
+library(ROCR)
+
+
+```{r dataframe logisticbindata, echo=FALSE}
+# Calculate the Accuracy of the model ( Source 7 - explained about diabeties related model and Source 3)
+#predict the binary classifer data set using type as Response and Variable
+
+library(ROCR)
+predict_modelBinaryClassifier <- predict(modelBinaryClassifier, newdata=BinaryClassifier_df, type="response")
+predict_modeldataframelabel <- prediction(predict_modelBinaryClassifier, BinaryClassifier_df$label)
+
+accuracyofmodel <- performance(predict_modeldataframelabel, measure = "auc")
+accuracyofmodel <- accuracyofmodel@y.values[[1]]
+accuracyofmodel
+
+```
+
+The accuracy of the logistic regression classifier for Binary Dataset is ~ 57%
+
+
+## The accuracy of Nearest neighbors algorithm (KNN mode)
+#source 6
+
+## The accuracy of the logistic regression classifier and nearest neighbors
+# Referred from Source 6
+
+
+#install.packages('class')
+library(class)
+
+BinaryClassifier_dfknn <- as.data.frame(lapply(BinaryClassifier_df[,2:2]))
+
+set.seed(12)
+#selection with random of 75% data.
+BinaryClassifier_dfknn1 <- sample(1:nrow(BinaryClassifier_df),size=nrow(BinaryClassifier_df)*0.75,replace = FALSE) 
+
+
+#75% dataset - training
+dt_Training1 <- BinaryClassifier_dfknn[BinaryClassifier_dfknn1,]
+
+#25% data - testing
+dt_testsample1 <- BinaryClassifier_dfknn[-BinaryClassifier_dfknn1,]
+
+
+#75% dataset - training for variable y
+dt_Training2 <- BinaryClassifier_dfknn[BinaryClassifier_dfknn1,drop=TRUE]
+
+#25% data - testing  for variable y
+dt_testsample2 <- BinaryClassifier_dfknn[-BinaryClassifier_dfknn1,drop=TRUE]
+
+#Build nearest neighbors model using k values of 32 and 33 
+
+modelbinarydfknn <- knn(data.frame(dt_Training1), data.frame(dt_testsample1), cl=dt_Training2, k=32)
+
+#Calculate the proportion of correct classification for k = 32
+Accuracyofmodelknn <- 100 * sum(dt_Training2 == modelbinarydfknn)/NROW(dt_testsample2)
+
+Accuracyofmodelknn
+
+
+
+## Conclusion
+
+Based on my reading and the resutls, Logistic regression classifier different from that of the nearest neighbors. KNN is much accurate than Logistic Regressions.
+
+
+# References
+1.  Calculating UAC: The Area Under a ROC Curve
+2.  https://rpubs.com/melonda/190569
+3.  https://towardsdatascience.com/binary-classification-with-logistic-regression-31b5a25693c4
+4.  https://www.rdocumentation.org/packages/utils/versions/3.6.2/topics/str#:~:text=Compactly%20Display%20the%20Str        cture%20of%20an%20Arbitrary%20R%20Object&text=The%20idea%20is%20to%20give,.)%20%2C%20see%20the%20examples.
+5.  https://towardsdatascience.com/real-world-implementation-of-logistic-regression-5136cefb8125
+6.  http://rstudio-pubs-static.s3.amazonaws.com/514195_93183a1fcf2d4a41b5eeb72f91048815.html
+7.  https://www.youtube.com/watch?v=C4N3_XJJ-jU
+8.  https://www.datacamp.com/community/tutorials/logistic-regression-R
+9. https://rpubs.com/shirokaner/logistic
+10. https://rstudio-pubs-static.s3.amazonaws.com/304133_610e9a56b9f7477791b2c1fe3cd8dd42.html
+11. https://lgatto.github.io/IntroMachineLearningWithR/supervised-learning.html
