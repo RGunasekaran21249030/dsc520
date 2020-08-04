@@ -27,7 +27,7 @@ show(BinaryClassifier_df)
 
 
 ```{r dataframe StructureBin, echo=FALSE}
-# Compactly Display The Structure Of An Arbitrary R Object -- Source 6
+# Compactly Display The Structure Of An Arbitrary R Object -- Source 4
 str(BinaryClassifier_df) 
 ```
 
